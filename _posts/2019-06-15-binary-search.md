@@ -10,7 +10,7 @@ keywords: 查找, 选择数组
 
 # 1 基本程序实现
 在一个数组中，查找一个数字的基本程序如下所示。
-```C++
+```cpp
 int binary_search(const vector<int>& nums, int target) {
     // -1 means target doesn`t exit in nums
     if (nums.empty()) return -1;
@@ -38,7 +38,7 @@ int binary_search(const vector<int>& nums, int target) {
 
 如果令low=0, high = size - 1, mid = (low + high) / 2，那么如果mid在第二个递增数组中，则nums[mid] <= nums[high]，否则mid在必第一个数组中。最小的元素在第二个数组的开头，因此要注意,当mid在第一个数组中时，low = mid + 1,当mid在第二个数组中，high = mid。
 
-```C++
+```cpp
 int findMin(vector<int>& nums) {
     int low = 0, high = nums.size() - 1;
     // no rotation
@@ -61,7 +61,7 @@ int findMin(vector<int>& nums) {
 > 《剑指Offer》(2rd Edition)面试题11
 
 
-```C++
+```cpp
 int find_in_order(vector<int>& nums, int low, int high) {
     int min_value = nums[low];
     for (int i = low + 1; i <= high; ++i) {
@@ -94,7 +94,7 @@ int findMin(vector<int>& nums) {
 有了**2**中的分析，可以先找到旋转的点，然后再进行**1**中的二分查找。
 
 记旋转的最小元素的下标为rota, 如果在未旋转数组中下标为i的元素，则该元素在旋转后的数组中的下标为(rota + i) % n.
-```C++
+```cpp
 int findMin(vector<int>& nums, target) {
     int low = 0, high = nums.size() - 1;
     while (low < high) {
