@@ -1,52 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+	{%- include head.html -%}
+</head>
+<body>
+	<main class="container">
+		<section class="about">
+			<img src="{{ "/assets/portfolio.png" | relative_url }}" alt="{{ site.plainwhite.name }}">
+			<h2>{{ site.plainwhite.name }}</h2>
+			<p class="tagline">{{ site.plainwhite.tagline }}</p>
+			<ul class="social">
+				<a href="https://github.com/{{ site.plainwhite.social_links.github }}"><li><i class="icon-github-circled"></i></li></a>
+				<a href="https://www.linkedin.com/{{ site.plainwhite.social_links.linkedIn }}"><li><i class="icon-linkedin-squared"></i></li></a>
+				<a href="https://twitter.com/{{ site.plainwhite.social_links.twitter }}"><li><i class="icon-twitter-squared"></i></li></a>
+			</ul>
+			<p>&copy; 2019</p>
+		</section>
+		<section class="content">
+			{{ content }}
+		</section>
+	</main>
+	{%- if site.plainwhite.analytics_id -%}
+	<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.plainwhite.analytics_id }}"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
 
-  {% include head.html %}
-
- <!--  <body data-spy="scroll" data-target="#myAffix"> -->
-  <body>
-
-    {% include header.html %}
-
-
-    <div id="main" class="container main">
-      {{ content }}
-    </div>
-
-    
-    <div id="top" data-toggle="tooltip" data-placement="left" title="回到顶部">
-      <a href="javascript:;">
-        <div class="arrow"></div>
-        <div class="stick"></div>
-      </a>
-    </div>
-
-    {% include footer.html %}
-
-
-    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"hygblog"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-<!-- 多说公共JS代码 end -->
-
-<!-- 在新窗口中打开 -->
-  <script type="text/javascript">
-    function addBlankTargetForLinks () {
-      $('a[href^="http"]').each(function(){
-          $(this).attr('target', '_blank');
-      });
-    }
-    $(document).bind('DOMNodeInserted', function(event) {
-      addBlankTargetForLinks();
-    });
-  </script>
-  </body>
+		gtag('config', '{{ site.plainwhite.analytics_id }}');
+	</script>
+	{%- endif -%}
+</body>
 </html>
