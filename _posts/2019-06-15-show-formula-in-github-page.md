@@ -12,7 +12,8 @@ markdown: kramdown
 kramdown:
     input: GFM
 ```
-kramdown是对原生的markdown语法进行扩展的轻量化语言。在写博文的时候，不可避免需要书写数学公式。原生的markdown实际上是不支持公式显示的，但是kramdown确实支持的。
+kramdown是对原生的markdown语法进行扩展的轻量化语言。在写博文的时候，不可避免需要书写数学公式。原生的markdown实际上是不支持公式显示的，但是kramdown却是支持的。具体语法格式可以参见[kramdown syntax](https://kramdown.gettalong.org/syntax.html#math-blocks)。
+
 
 # 1. 配置head
 
@@ -27,8 +28,7 @@ kramdown是对原生的markdown语法进行扩展的轻量化语言。在写博�
 
 # 2. 常用的mathjax公式格式
 
-mathjax与Tex语法基本相同。具体可以参数\[kramdown syntax](https://kramdown.gettalong.org/syntax.html#math-blocks)。
-
+mathjax与Tex语法基本相同。
 ## 2.1 行内公式实例
 
 公式出现在一段文字当中，欧拉公式$$e^{i\pi}+1=0$$是世界上最完美的公式。
@@ -73,3 +73,4 @@ $$
 \end{align*}
 $$
 
+**enjoy it!**
