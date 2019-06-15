@@ -1,18 +1,17 @@
 ---
 layout: page
 title: About
-description: 打码改变世界
-keywords: Zhuang Ma, 马壮
+description: 俺老升写字的地方
+keywords: Shengfa Zhu, 俺老升 
 comments: true
 menu: 关于
 permalink: /about/
 ---
+休对故人思故国，且将新火试新茶
 
-我是马壮，码而生，码而立。
+诗酒趁年华
 
-仰慕「优雅编码的艺术」。
-
-坚信熟能生巧，努力改变人生。
+苏轼 《望江南·超然台作》
 
 ## 联系
 
