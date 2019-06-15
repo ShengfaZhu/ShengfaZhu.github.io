@@ -1,8 +1,8 @@
 ---
 layout: post
-title: template page
-categories: [Alorithm]
-description: some word here
+title: 位操作
+categories: [Alorithm, LeetCode]
+description: 位操作介绍
 keywords: keyword1, keyword2
 ---
 
