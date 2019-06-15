@@ -73,4 +73,8 @@ $$
 \end{align*}
 $$
 
-**enjoy it!**
+可以**enjoy it!**了。
+
+# 参考
+
+[依云's Blog](https://blog.lilydjwg.me/2011/5/23/mathjax-a-good-formula-display-engine.26966.html)
