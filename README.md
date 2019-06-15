@@ -1,110 +1,82 @@
-# plainwhite
+# 码志
 
-Simplistic jekyll portfolio-style theme for writers.
+我的个人博客：<https://mazhuang.org>，欢迎 Star 和 Fork。
 
-**Demo**: [thelehhman.com](https://thelehhman.com)
+## 概览
 
-![plainwhite theme preview](/screenshot.png)
+<!-- vim-markdown-toc GFM -->
 
+* [效果预览](#效果预览)
+* [Fork 指南](#fork-指南)
+* [贴心提示](#贴心提示)
+* [经验与思考](#经验与思考)
+* [致谢](#致谢)
 
-## Installation on Github Pages
+<!-- vim-markdown-toc -->
 
-Add this line to your site's `_config.yml`:
-```yaml
-remote_theme: thelehhman/plainwhite-jekyll
-```
-## Installation
+## 效果预览
 
-Add this line to your Jekyll site's `Gemfile`:
+**[在线预览 &rarr;](https://mazhuang.org)**
 
-```ruby
-gem "plainwhite"
-```
+![screenshot home](https://mazhuang.org/assets/images/screenshots/home.png)
 
-And add this line to your Jekyll site's `_config.yml`:
+## Fork 指南
 
-```yaml
-theme: plainwhite
-```
+Fork 本项目之后，还需要做一些事情才能让你的页面「正确」跑起来。
 
-And then execute:
+1. 正确设置项目名称与分支。
 
-    $ bundle
+   按照 GitHub Pages 的规定，名称为 `username.github.io` 的项目的 master 分支，或者其它名称的项目的 gh-pages 分支可以自动生成 GitHub Pages 页面。
 
-Or install it yourself as:
+2. 修改域名。
 
-    $ gem install plainwhite
+   如果你需要绑定自己的域名，那么修改 CNAME 文件的内容；如果不需要绑定自己的域名，那么删掉 CNAME 文件。
 
-## Usage
+3. 修改配置。
 
-The "plainwhite" key in _config.yml is used to customize the theme data.
-```yaml
-plainwhite:
-  name: Adam Denisov
-  tagline: Developer. Designer
-  date_format: "%b %-d, %Y"
+   网站的配置基本都集中在 \_config.yml 文件中，将其中与个人信息相关的部分替换成你自己的，比如网站的 url、title、subtitle 和第三方评论模块的配置等。
 
-  social_links:
-    twitter: thelehhman
-    github:  thelehhman
-    linkedIn: in/thelehhman # format: locale/username
-```
+   **评论模块：** 目前支持 disqus、gitment 和 gitalk，选用其中一种就可以了，推荐使用 gitalk。它们各自的配置指南链接在 \_config.yml 文件的 Comments 一节里都贴出来了。
 
-**Updating Placeholder Image**
+   **注意：** 如果使用 disqus，因为 disqus 处理用户名与域名白名单的策略存在缺陷，请一定将 disqus.username 修改成你自己的，否则请将该字段留空。我对该缺陷的记录见 [Issues#2][3]。
 
-The placeholder portfolio image can be replaced by the desired image by placing it as `assets/portfolio.png` in your jekyll website.
+4. 删除我的文章与图片。
 
-**Comments (Disqus)**
+   如下文件夹中除了 template.md 文件外，都可以全部删除，然后添加你自己的内容。
 
-Comments on posts can be enabled by specifying your disqus_shortname under plainwhite in `_config.yml`. For example,
-```yaml
-plainwhite:
-  disqus_shortname: games
-```
+   * \_posts 文件夹中是我已发布的博客文章。
+   * \_drafts 文件夹中是我尚未发布的博客文章。
+   * \_wiki 文件夹中是我已发布的 wiki 页面。
+   * images 文件夹中是我的文章和页面里使用的图片。
 
-**Google Analytics**
+5. 修改「关于」页面。
 
-It can be enabled by specifying your analytics id under plainwhite in `_config.yml`
-```yaml
-plainwhite:
-  analytics_id: '< YOUR ID >'
-```
+   pages/about.md 文件内容对应网站的「关于」页面，里面的内容多为个人相关，将它们替换成你自己的信息，包括 \_data 目录下的 skills.yml 和 social.yml 文件里的数据。
 
-**Sitemap**
+## 贴心提示
 
-It can be toggled by the following line to under plainwhite in  `_config.yml`
+1. 排版建议遵照一定的规范，推荐 [中文文案排版指北（简体中文版）][1]。
 
-```yaml
-plainwhite:
-  sitemap: true
-```
+2. 在本地预览博客效果可以参考 [Setting up your Pages site locally with Jekyll][2]。
 
-**Excerpts**
+## 经验与思考
 
-Excerpts can be enabled by adding the following line to your `_config.yml`
-```yaml
-show_excerpts: true
-```
-**Layouts**
+* 简约，尽量每个页面都不展示多余的内容。
 
-- Home
-- Page
-- Post
+* 有时一图抵千言，有时可能只会拖慢网页加载速度。
 
-## Contributing
+* 言之有物，不做无痛之呻吟。
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/thelehhman/plainwhite-jekyll. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+* 如果写技术文章，那先将技术原理完全理清了再开始写，一边摸索技术一边组织文章效率较低。
 
-## Development
+* 杜绝难断句、难理解的长句子，如果不能将其拆分成几个简洁的短句，说明脑中的理解并不清晰。
 
-To set up your environment to develop this theme, run `bundle install`.
+* 可以学习一下那些高质量的博主，他们的行文，内容组织方式，有什么值得借鉴的地方。
 
-Your theme is setup just like a normal Jekyll site! To test your theme, run `bundle exec jekyll serve` and open your browser at `http://localhost:4000`. This starts a Jekyll server using your theme. Add pages, documents, data, etc. like normal to test your theme's contents. As you make modifications to your theme and to your content, your site will regenerate and you should see the changes in the browser after a refresh, just like normal.
+## 致谢
 
-When your theme is released, only the files in `_layouts`, `_includes`, `_sass` and `assets` tracked with Git will be bundled.
-To add a custom directory to your theme-gem, please edit the regexp in `plainwhite.gemspec` accordingly.
+本博客外观基于 [DONGChuan](https://dongchuan.github.io) 修改，感谢！
 
-## License
-
-The theme is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
+[1]: https://github.com/mzlogin/chinese-copywriting-guidelines
+[2]: https://help.github.com/articles/setting-up-your-pages-site-locally-with-jekyll/
+[3]: https://github.com/mzlogin/mzlogin.github.io/issues/2
