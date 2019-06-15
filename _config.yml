@@ -81,8 +81,7 @@ collections:
         output: true
         permalink: /wiki/:path/
 
-repository: mzlogin/mzlogin.github.io
-
+repository: ShengfaZhu/ShengfaZhu.github.io
 # ---------------- #
 #      Comments    #
 # ---------------- #
