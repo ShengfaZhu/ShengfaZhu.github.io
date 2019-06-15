@@ -1,19 +1,9 @@
-- name: Software Engineer Keywords
+- name: Software Developer
   keywords:
-      - Java
       - C++
       - Python
-      - Design Patterns
 
-- name: Mobile Developer Keywords
+- name: Structure Analyst
   keywords:
-      - Android
-      - Reverse Engineering
-
-- name: Windows Developer Keywords
-  keywords:
-      - Win32 SDK
-      - DuiLib
-      - WTL
-      - COM
-      - WinDbg
+      - Abaqus
+      - Isight
