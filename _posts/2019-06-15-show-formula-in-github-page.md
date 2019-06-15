@@ -27,8 +27,49 @@ kramdown是对原生的markdown语法进行扩展的轻量化语言。在写博�
 
 # 2. 常用的mathjax公式格式
 
-mathjax与Tex语法基本相同。
+mathjax与Tex语法基本相同。具体可以参数\[kramdown syntax](https://kramdown.gettalong.org/syntax.html#math-blocks)。
 
-## 2.1 行内公式
+## 2.1 行内公式实例
 
-公式出现在一段文字当中，欧拉公式$$e^{i\pi}+1=0$$世界上最完美的公式。
+公式出现在一段文字当中，欧拉公式$$e^{i\pi}+1=0$$是世界上最完美的公式。
+
+## 2.2 行间公式实例
+
+“&”对齐符号，“\\”换行显示，\array显示矩阵等。
+
+```
+$$
+\begin{align*}
+  & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+  & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+      \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
+      \vdots & \ddots & \vdots \\
+      \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
+    \end{array} \right)
+  \left( \begin{array}{c}
+      y_1 \\
+      \vdots \\
+      y_n
+    \end{array} \right)
+\end{align*}
+$$
+```
+
+$$
+\begin{align*}
+  & \phi(x,y) = \phi \left(\sum_{i=1}^n x_ie_i, \sum_{j=1}^n y_je_j \right)
+  = \sum_{i=1}^n \sum_{j=1}^n x_i y_j \phi(e_i, e_j) = \\
+  & (x_1, \ldots, x_n) \left( \begin{array}{ccc}
+      \phi(e_1, e_1) & \cdots & \phi(e_1, e_n) \\
+      \vdots & \ddots & \vdots \\
+      \phi(e_n, e_1) & \cdots & \phi(e_n, e_n)
+    \end{array} \right)
+  \left( \begin{array}{c}
+      y_1 \\
+      \vdots \\
+      y_n
+    \end{array} \right)
+\end{align*}
+$$
+
