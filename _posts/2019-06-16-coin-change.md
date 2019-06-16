@@ -12,14 +12,14 @@ LeetCode 322, 518就是关于硬币置换的问题，都可以用动态规划的
 
 记为了凑出$$x$$元所用硬币的最少数量为$$f(x)$$，则由递推关系：
 
-```math
+$$
 f(x)=\min_{i} \left \{ f(x-n_{i}) + 1\right \}
-```
+$$
 式中，$$n_{i}$$为面值。
 
 
 动态规划的代码如下：
-```
+```cpp
 int coinChange(vector<int>& coins, int amount) {
     int Max = amount + 1;
     vector<int> dp(amount + 1, Max);
@@ -42,7 +42,7 @@ int coinChange(vector<int>& coins, int amount) {
 该问题与问题1稍有不同，但是同样可以用动态规划的方法进行求解。
 
 
-```
+```cpp
 int change(int amount, vector<int>& coins) {
     vector<int> dp(amount + 1, 0);
     dp[0] = 1;
