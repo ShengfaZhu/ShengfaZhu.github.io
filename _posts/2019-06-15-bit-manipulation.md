@@ -31,14 +31,14 @@ keywords: 位操作, 求1的数量
 
 ## 2.1. 求1/2
 右移1位与整型的除2结果相同，可以用在二分查找中。
-```C
+```cpp
 int a = 5
 cout << (a >> 1) << endl;
 ```
 
 ## 2.2. 判断奇偶
 在整数的二进制表示中，偶数的最后一位为0，奇数的最后一位为1，可以据此判断奇偶性。
-```C
+```cpp
 int a = 5;
 if (a & 1 == 0)
     cout << "even" << endl;
@@ -56,7 +56,7 @@ else
 - 相同数的异或为0，A ^ A = 0
 - 和0的异或为本身，A ^ 0 = A
 
-```C++
+```cpp
 int a = 5, b = 6;
 a = a ^ b;
 b = a ^ b;
@@ -67,7 +67,7 @@ cout << a << b << endl;
 ## 2.4. 变换正负号
 将正数变为负数，负数变为正数，并且绝对值不变。
 根据正负数二进制编码规则，变换正负号仅需取反再加一即可。
-```C++
+```cpp
 int a = 5, b = -6;
 a = ~a + 1;
 b = ~b + 1;
@@ -79,7 +79,7 @@ cout << a << endl << b << endl;
 
 ## 3.1. 二进制中1的个数
 统计一个整数的二进制表示中1出现的次数并不难，对于一个4字节的整型，只需要遍历其32位，加以统计即可。
-```C++
+```cpp
 int countOnes(const int& num) {
     int count = 0;
     int mask = 1;
@@ -91,7 +91,7 @@ int countOnes(const int& num) {
 }
 ```
 上面的做法并不复杂也不慢，对于任何数字都需要循环32次。但是当数字中有很多位0时，如果可以跳过，那就可以加速算法。
-```C++
+```cpp
 int countOnes(int num) {
     int count = 0;
     while (num) {
@@ -106,7 +106,7 @@ int countOnes(int num) {
 ## 3.2 判断是否为2的幂
 
 如果一个整数是2的幂，则该数的二进制表示一定为00...0100..00，有且仅有一个1.可以参考3.1节中的技巧，用位操作快速判断一个整数是否为2的幂次。
-```C++
+```cpp
 bool isPowerOfTwo(int num) {
     return (num & (num - 1)) == 0;
 }
@@ -139,7 +139,7 @@ int findOccurOnce(const vector<int>& nums) {
 实现如下：
 > 《剑指Offer》2nd ed：275-277
 
-```C++
+```cpp
 unsigned int findFirstOne(int num) {
     unsigned int index = 0;
     while (((num & 1) == 0) && (index < 8 * sizeof(int))) {
@@ -165,7 +165,7 @@ void findOccurOnce(const vector<int>& nums, int* num1, int* num2) {
 
 ### 3.3.3. 一个数字出现一次，其余数字出现3次
 如果其他数字均出现了三次，就意味着无法使用全部异或一遍的处理方法。如果将所有元素在的对应数位相加，然后再把每位相加之和对3求余，每位所得的余数就是出现一次数字对应位上的数,然后再把该数表示成整型形式。
-```C++
+```cpp
 int findOccurOnce(const vector<int>& nums) {
     vector<int> sumBit(8 * sizeof(int), 0);
     for (int n : nums) {
