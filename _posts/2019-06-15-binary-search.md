@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 二分查找
-categories: [Alorithm, LeetCode]
+categories: [Algorithm, LeetCode]
 description: 有序必二分
 keywords: 查找, 选择数组
 ---

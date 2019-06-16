@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 位操作
-categories: [Alorithm, LeetCode]
+categories: [Algorithm, LeetCode]
 description: 位操作介绍
 keywords: 位操作, 求1的数量
 ---
