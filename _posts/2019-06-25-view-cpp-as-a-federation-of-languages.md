@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Item01:视C++为一个语言联邦
+title: Item01：视C++为一个语言联邦
 categories: [Reading notes on Effective C++]
 description: some word here
 keywords: keyword1, keyword2
