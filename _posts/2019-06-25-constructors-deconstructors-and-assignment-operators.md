@@ -81,3 +81,71 @@ TimeKeeper* ptk = getTimeKeeper(); // delete ptk or smart pointer
 另一方面，若class函数并没有virtual函数，通常表示它并不意图作为一个多态(polymorphic)的基类。此时不应该为其声明virtual析构函数。因为实现virtual函数时，会维护一个虚指针vptr和虚表vtbl，将会无谓增加对象的大小。
 
 最后，当你设计的类不想被继承，应当使用**final**关键字(C++11)。
+
+# Item08. 别让异常逃离析构函数
+
+首先，C++并不禁止析构函数抛出异常，但是析构函数不应当抛出异常。逻辑是这样的，程序运行过程出现了异常，就栈中会存在一些未能正常销毁的局部变量，此时会调用局部变量的析构函数对这些变量进行销毁，析构函数是异常处理的一部分。若析构函数又抛出了异常，前面出现的异常还未处理完成，此时程序出现崩溃或者未定义的行为。
+
+举个例子，一个数据库连接对象，为了确保在使用结束后关闭数据库，在其析构函数中调用了close()。如果调用成功，没有任何问题。但是一旦close()函数抛出了异常，将会造成问题。
+
+```cpp
+class DBConn {
+public:
+    ...
+    ~DBConn() {
+        db.close();
+    }
+
+private:
+    DBConnection db;
+};
+```
+两种处理，一是抛出异常，结束程序，调用abort
+
+```cpp
+~DBConn() {
+    try {db.close();}
+    catch (...) {
+        log(...);
+        std::abort();
+    }
+}
+```
+二是吞下异常
+```cpp
+~DBConn() {
+    try {db.close();}
+    catch (...) {
+        log(...);
+    }
+}
+```
+两种方法都可以防止析构函数抛出异常，但是存在较好的策略。首先将调用close()的权利交给用户，如果用户没有使用这项权利，那么再执行上述两种策略之一。
+
+```cpp
+class DBConn {
+public:
+    ...
+    void close() {
+        db.close();
+        closed = true;
+    }
+    ~DBConn() {
+        if (!closed) {
+            try {
+                db.close();
+            }
+            catch(...) {
+                log(...);
+                std::abort() // or not
+            }
+        }
+    }
+
+private:
+    DBConnection db;
+    bool closed;
+};
+```
+
+> 《Effective C++》 是本好书.
