@@ -163,4 +163,116 @@ private:
 
 因此，在构造函数和析构函数中调用virtual函数，是没有任何意义的。
 
+# Item10. 令operator=返回一个refrence to *this
+
+关于连续赋值：
+
+```cpp
+int x, y, z;
+x = y = z = 1;
+// another way
+x = (y = (z = 1));
+```
+
+为了实现连续赋值，赋值操作符应当返回一个reference指向操作符左侧的实参，这是应当遵循的**协议**，其他赋值相关的运算符也应当遵循。
+
+```cpp
+class Widget {
+public:
+    Widget& operator=(const Widget& rhs) {
+        ...
+        return *this;
+    }
+    Widget& operator+=(const Widget& rhs) {
+        ...
+        return *this;
+    }
+
+};
+```
+
+# Item11. 在operator=处理自我赋值
+
+程序设计中总会不经意地进行自我赋值，应当在operator=函数中对其审慎地对待。
+
+```cpp
+class Bitmap {...};
+class Widget {
+    ...
+private:
+    Bitmap *pb;
+};
+
+Widget& Widget::operator=(const Widget &rhs) {
+    delete pb;
+    pb = new Bitmap(*rhs.pb);
+    return *this;
+}
+```
+
+上述实现的问题在于，如果赋值的目的段和rhs是同一个对象时，先将自己pb的空间释放了，后面也就无法进行访问了。
+
+传统的做法是在前面进行证同测试(identity test)
+
+```cpp
+Widget& Widget::operator=(const Widget &rhs) {
+    if (this == &rhs) return *this;
+    delete pb;
+    pb = new Bitmap(*rhs.pb);
+    return *this;
+}
+```
+
+这个做法可以处理自我赋值，但是存在异常安全性的问题。当Bitmap的拷贝构造函数抛出异常时，Widget将始终会有一个指针指向一块Bitmap空间，无法访问也无法释放这个空间。
+
+使用**copy and swap**技术是一个较好的替代方案，前提是编写一个不抛出异常的swap函数。既能保证自我赋值安全，也能保证异常安全性。
+
+```cpp
+void Widget::swap(Widget& rhs) {
+    ...
+}
+
+Widget& Widget::operator=(const Widget &rhs) {
+    Widgt tmp(ths)
+    swap(tmp);
+    return *this;
+}
+```
+
+# Item12. 复制对象时勿忘其每一个成分
+
+**设计良好的OO-System会将对象的内部进行封装，只留两个函数负责对象的拷贝和赋值，copy构造函数和赋值运算符函数。**
+
+```cpp
+class Date {...};
+class Customer {
+public:
+    Customer(const Customer& rhs) : 
+        name(rhs.name), lastTransaction(rhs.lastTransaction){}
+
+    Customer& operator=(const Customer& rhs) {
+        name = rhs.name;
+        lastTransaction = rhs.lastTransaction;
+    }
+private:
+    std::string name;
+    Date lastTransaction;
+};
+
+class PriorityCustomer : public Customer {
+public:
+    PriorityCustomer(const PriorityCustomer& rhs) :
+        Customer(rhs), priority(rhs.priority) {}
+
+    PriorityCustomer& operator=(const PriorityCustomer& rhs) {
+        Customer::operator=(rhs);
+        priority = rhs.priority;
+    }
+private:
+    int priority;
+}
+```
+
+设计良好的拷贝构造函数和赋值运算符应不忘记任何一个成员，如上面的程序所示。应当注意的是，在派生类中，应当显式调用基类的拷贝构造函数和赋值运算符函数，对基类独有的私有成员进行赋值，否则编译器将调用基类中的默认拷贝构造函数，那就很有可能不是希望的结果。
+
 > 《Effective C++》 是本好书.
