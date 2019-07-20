@@ -56,3 +56,28 @@ class HomeForSale : private Uncopyable {
     ...
 };
 ```
+
+# Item07. 为多态的基类声明virtual析构函数
+
+举个例子，有多种做法可以记录时间，因此设计一个TimeKeeper base class和一些derived class作为不同的计时方法，是相当合理的，我们一般会用到虚函数多态的技术加上工厂模式实现。
+
+```cpp
+class TimeKeeper {
+public:
+    TimeKeeper();
+    ~TimeKeeper();
+    ...
+};
+
+class AtomicClock : public TimeKeeper {...};
+class WaterClock : public TimeKeeper {...};
+class WristClock : public TimeKeeper {...};
+
+TimeKeeper* ptk = getTimeKeeper(); // delete ptk or smart pointer
+```
+
+上述的实现有个问题，getTimeKeeper()返回的指针指向一个derived class对象，而那个对象却由一个base class指针删除。**当derive 对象经由一个base calss指针删除，而该base class带着一个non-virtual的析构函数，其结果未定义，实际执行通常发生的是对象的derived 成分没有被销毁，造成了诡异的局部销毁对象**。因此，应当为TimeKeeper这种多态基类声明virtual析构函数。
+
+另一方面，若class函数并没有virtual函数，通常表示它并不意图作为一个多态(polymorphic)的基类。此时不应该为其声明virtual析构函数。因为实现virtual函数时，会维护一个虚指针vptr和虚表vtbl，将会无谓增加对象的大小。
+
+最后，当你设计的类不想被继承，应当使用**final**关键字(C++11)。
