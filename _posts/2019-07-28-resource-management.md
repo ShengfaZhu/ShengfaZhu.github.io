@@ -35,7 +35,7 @@ void f() {
 ```
 
 上面的例子展示了以对象管理资源两个关键想法：
-- **获得资源后立即放入管理对象内**，上面代码以返回的raw pointer来初始化智能指针，是“资源取得时机便是初始化时机(Resource Acquisition Is Initialization, RAII)”
+- **获得资源后立即放入管理对象内**，上面代码以返回的raw pointer来初始化智能指针，是“资源取得时机便是初始化时机(Resource Acquisition Is Initialization, RAII)”，资源在构造函数中获得，在析构函数中释放。
 - **管理对象运用析构函数确保资源被释放**
 
 应当指出，智能指针的析构函数内做的是delete动作，而不是delete[]，因此不应像下面一样在动态分配的数组上使用智能指针。
@@ -48,6 +48,58 @@ std提供的vector已经可以取代动态内存数组的需求，所有尽量�
 
 # Item14. 在资源管理类中小心coping行为
 
+heap-based的资源可以采用智能指针进行管理，但是并非是所有的资源都是heap-based的，例如互斥对象(Mutex object)，需要在程序结束时，为对象解锁。例如使用C API函数出来互斥对象。
+
+```cpp
+void lock(Mutex* pm); // 锁定pm所指的互斥器
+void unlock(Mutex* pm); // 解锁pm所指的互斥器
+
+class Lock {
+public:
+    explicit Lock(Mutex* pm) : mutexPtr(pm) {
+        lock(mutexPtr); // 获得资源
+    }
+
+    ~Lock() {
+        unlock(mutexPtr); // 释放资源
+    }
+
+private:
+    Mutex *mutexPtr;
+};
+```
+
+客户对Lock的用法如下所示，满足在“在构造时获得资源，在析构时释放资源”的原则。
+
+```cpp
+Mutex m;
+{
+    Lock ml(&m);
+}
+```
+
+但是，当RAII对象被复制时，应当审慎地对待。一般有两种处理方式：禁止复制和采用引用计数。
+
+禁止复制在该书的Item06中讨论过，有两种实现方式，一种是将拷贝构造函数和赋值函数定义为私有成员，第二种是将该类私有继承Uncopyable基类。
+
+对底层资源进行引用计数（reference count）。资源可以同时被多个所有者拥有，当资源的最后一个使用者被销毁时，资源释放。可以采用std::shared_ptr进行实现。
+
+```cpp
+class Lock {
+public:
+    explicit Lock(Mutex* pm) : mutexPtr(pm, unlock) // 以unlock()函数为删除器
+    {
+        lock(mutexPtr.get()); //
+    }
+
+private:
+    std::shared_ptr<Mutex> mutexPtr;
+};
+```
+
+析构函数会自动调用non-static成员的析构函数，而MutexPtr的析构函数会在互斥器的计数为0时，调用删除器（unlock），这样也并不需要定义析构函数。
+
+# Item15. 在资源管理类中提供对原始资源的访问
 
 
 
