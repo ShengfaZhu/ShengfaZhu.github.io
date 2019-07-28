@@ -101,10 +101,83 @@ private:
 
 # Item15. 在资源管理类中提供对原始资源的访问
 
+在完美的世界里，采用资源管理类（智能指针）来对抗资源泄露，是一种很好的做法。但是，现实世界中需要用到大量的C API(例如qpOASES等第三方库)，此时不得不直接处理raw resource。因此，需要在资源管理类中提供对原始资源的访问方式。有显式和隐式两种访问的设计方式。
 
+智能指针都提供了get()方法，来进行显式转换，返回智能指针内部的原始指针。
 
+隐式的访问方式是在资源管理类中定义函数运算符操作符重载函数，如下程序所示。
 
+```cpp
+class Font{
+public:
+    ...
+    const FontHandle operator() const {
+        return f;
+    } 
 
+private:
+    FontHandle f;
+};
 
+```
+
+在调用的时候，编译器会自动调用函数运算符重载函数进行隐式转换。
+
+```cpp
+void changeFontSize(FontHandle f, int new_size);
+
+Font f;
+int newFontSize;
+changeFontSize(f, newFontSize); // Font -> FontHandle的隐式转换
+```
+
+隐式转换使得接口使用时更加自然，但是可能会在不经意间进行隐式转换，得到出乎意料的效果；显式转换不容易发生歧义，但是接口使用则显得较为生硬。究竟是提供显式转换还是隐式转换需要权衡。
+
+# Item16. 成对使用new和delete时要采取相同的形式
+
+在C++中，为数组动态申请的空间和为单个变量动态申请的空间，在内存的物理布置上是不同的（数组的动态空间必须要有属性说明数组的长度吧），因此new和delete的形式必须匹配，两者不匹配将导致未定义行为。
+
+```cpp
+std::string* stringPtr1 = new std::string;
+std::string* stringPtr2 = new std::string[100];
+
+delete stringPtr1;
+delete[] strinPtr2;
+
+delete[] stringPtr1; // 未定义行为
+delete stringPtr2; // 未定义行为
+```
+
+# Item17. 以独立语句将newed对象置入智能指针
+
+这个条目描述的是一种非常特殊的情况。考虑如下的代码：
+
+```cpp
+int priority();
+void processWidget(std::shared_ptr<Widget> pw, int priority)
+
+processWidget(new Widget, priority()); // 不能通过编译，因为shared_ptr的构造函数的explicit不同进行隐式转换
+
+processWidget(std::shared_ptr<Widget>(new Widget), priority()); // 在特殊情况下，可能发生资源泄露
+```
+
+上述程序段的最后一句在极特殊的情况下可能发生资源泄露。上述语句可以分成三件事情：
+
+- 执行new Widget
+- 调用shared_ptr的构造函数
+- 调用priority()的函数
+
+但是C++编译器有权利在一条语句内部，决定上述三件事情的执行顺序（非常神奇，不是按照参数的顺序进行的），如果按下面的顺序进行，并且调用priority()函数时出现了异常，此时new Widget申请的空间并没有放入智能指针中进行管理，因此会发生资源泄露。
+
+- 执行new Widget
+- 调用priority()的函数
+- 调用shared_ptr的构造函数
+
+虽然，上述情况的可能性很小，但一但发生就很难察觉。以独立语句将new生产的对象放在智能指针中可以完全杜绝这种情况发生，如下程序所示。保证new申请对象放入资源管理对象（智能指针）在同一条独立语句中，这样中间就不会出现异常了。
+
+```cpp
+std::shared_ptr<Widget> pw(new Widget);
+processWidget(pw, priority());
+```
 
 > 《Effective C++》 是本好书.
