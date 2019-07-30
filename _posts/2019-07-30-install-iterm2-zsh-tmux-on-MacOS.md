@@ -66,8 +66,8 @@ brew install tmux
 安装tmux之后，在zsh终端中输入tmux既可以进去tmux中，tmux的默认前导键为Ctrl + B，一般的操作均需要先按前导键，其中常用的命令有
 
 - 左右分屏：Ctrl + B，然后%
-— 上下分屏：Ctrl + B, 然后"
+- 上下分屏：Ctrl + B, 然后"
 
-![参考](https://www.jianshu.com/p/c5c5037f72e0)
+[参考文章](https://www.jianshu.com/p/c5c5037f72e0)
 
 安装这么多之后，基本可以起飞了。首先，还有很多功能等待探索，然后不应该在这些上面花费太多的精力，还是应当把更多的时间放在算法的研究上。加油，少年！
